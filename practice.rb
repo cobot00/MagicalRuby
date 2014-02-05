@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# coding: utf-8
 
 =begin
   Rubyの基本的な文法、構文の確認のための簡単なコード集です。
@@ -36,6 +37,12 @@ end
 disp_time("start")
 disp_time("end  ")
 
+# 型変換
+partintg_line
+puts 123.to_s
+sum = 123 + "456".to_i
+puts "123 + 456 = #{sum}"
+
 # 引数の扱い方
 partintg_line
 puts ARGV.size
@@ -51,17 +58,14 @@ else
   puts "many arguments given"
 end
 
-partintg_line
 for arg in ARGV
   puts arg
 end
 
-partintg_line
 ARGV.each{|arg|
   puts "arg = #{arg}"
 }
 
-partintg_line
 ARGV.each_with_index{|arg, i|
   puts "index = #{i}, arg = #{arg}"
 }
@@ -116,15 +120,48 @@ deep_copied.each{|each|
 
 # ファイルIO
 partintg_line
-File.open(FILE_NAME,"r") do |file|
-  file.each_with_index do |line, i|
-    puts "line #{i+1}: #{line}"
-  end
-end
-
 File.open(FILE_NAME,"w") do |file|
   numbers.each{|each|
     # 右詰かつゼロ埋めで数値を3桁表記にする
     file.puts "hoge" + "%03d" % each
   }
 end
+
+File.open(FILE_NAME,"r") do |file|
+  file.each_with_index do |line, i|
+    puts "line #{i+1}: #{line}"
+  end
+end
+
+# CSV
+partintg_line
+
+require 'csv'
+
+matrix = [
+  ["1-1", "1-2","1-3"],
+  ["2-1", "2-2","2-3"],
+  ["3-1", "3-2","3-3"]
+]
+
+CSV.open("practice.csv", "w") do |csv|
+  matrix.each do |row|
+    csv << row
+  end
+end
+
+buf = []
+CSV.foreach("practice.csv", "r") do |row|
+  buf << row
+end
+
+puts "buf.size = #{buf.size}"
+p buf
+
+# JSON
+partintg_line
+
+require 'json'
+
+values = [{a: 1}, {b: 2}, {c: 3}]
+puts values.to_json
